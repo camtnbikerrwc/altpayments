@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: gerard
- * Date: 9/3/18
- * Time: 11:19 AM
- */
+
 
 require '../AllPaymentsVirtualCurrencyWrapper.php';
 
@@ -12,9 +7,9 @@ require '../AllPaymentsVirtualCurrencyWrapper.php';
 // Alt Payments BC Token for the API
 $token = '33b8929cb02d4e02b1368ee297f42a94';
 
-$myLTCAddress = "LiFPsdKSsyRp7nMKFHBYi9FE9XS14Q URP4";
-$johnsLTCAddress = "LfiCfPi7zzKKGNNp9iwQE4URAQz2b7kCA5";
-$gerardsWIFKey = "T6McV7tzgNkBVNzYYkgLFfrSDc4RV8 rNSouGLYZDsAUZq2SasBtg";
+$myLTCAddress = "XXXXXXX URP4";
+$johnsLTCAddress = "YYYYYYY";
+$gerardsWIFKey = "ZZZZZZZ rNSouGLYZDsAUZq2SasBtg";
 
 
 $altPaymentVCAPI = new AltPaymentsVirtualCurrencyWrapper(myWalltAddress, $token);
