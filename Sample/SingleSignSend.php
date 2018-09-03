@@ -5,7 +5,7 @@ require '../AllPaymentsVirtualCurrencyWrapper.php';
 
 
 // Alt Payments BC Token for the API
-$token = '33b8929cb02d4e02b1368ee297f42a94';
+$token = 'ccccccccc';
 
 $myLTCAddress = "XXXXXXX URP4";
 $johnsLTCAddress = "YYYYYYY";
