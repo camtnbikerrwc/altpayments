@@ -1,14 +1,20 @@
 <?php
 
 
-require 'vendor/autoload.php';
+//require 'vendor/autoload.php';
+require __DIR__  . '/../php-client/autoload.php';
+
+use BlockCypher\Rest\ApiContext;
+use BlockCypher\Auth\SimpleTokenCredential;
+use \BitWasp\Bitcoin\Key\PrivateKeyFactory;
 
 class AltPaymentsVirtualCurrencyWrapper
 {
 
     private $sourceAddress;
-    private $blockCypherToker;
+    private $blockCypherToken;
     private $apiContext;
+
     private $txClient;
 
     /**
@@ -22,8 +28,8 @@ class AltPaymentsVirtualCurrencyWrapper
      */
     function __construct($srcAddress, $blockCypherToken)
     {
-        $this->sourceWifAddress = $srcAddress;
-        $this->blockCypherToker = $blockCypherToken;
+        $this->sourceAddress = $srcAddress;
+        $this->blockCypherToken = $blockCypherToken;
     }
 
 
@@ -43,11 +49,10 @@ class AltPaymentsVirtualCurrencyWrapper
 
     public function init( $virtualCurrencyType, $loggingConfig) {
 
-
         $this->apiContext = ApiContext::create(
             'main', $virtualCurrencyType, 'v1',
             new SimpleTokenCredential($this->blockCypherToken),
-            $virtualCurrencyType
+            $loggingConfig
         );
 
         // Create a Client
@@ -106,28 +111,34 @@ class AltPaymentsVirtualCurrencyWrapper
      * @param $privateWIFKey The Private WIF Key of the Source Wallet
      *
      * @throws Exception
+     * @returns \BlockCypher\Api\Transaction
      */
     public function SendVirtualCurrency($toAddress, $valueInSatoshis, $privateWIFKey)
     {
 
+        try {
         $txSkeleton = $this->createTransactionSleleton($toAddress, $valueInSatoshis);
 
+
         $privateKey = PrivateKeyFactory::fromWif($privateWIFKey);
+
         $pk = $privateKey->getHex();
+
         $privateKeys = array(
             $pk
         );
 
+
         // Sign TXSkeleton
         $txSkeleton = $this->txClient->sign($txSkeleton, $privateKeys);
 
-        try {
             /// Send TX to the network
             $txSkeleton = $this->txClient->send($txSkeleton);
         } catch (Exception $ex) {
             throw $ex;
         }
 
+        return $txSkeleton;
 
     }
 
